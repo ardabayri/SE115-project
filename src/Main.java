@@ -140,8 +140,20 @@ public class Main {
         return sum;
     }
 
-    public static int bestDayOfMonth(int month) { 
-        return 1234; 
+    public static int bestDayOfMonth(int month) {
+        if(month<0||month>MONTHS){
+            return -1;
+        }
+        int bestDay=1;
+        int besttotal=totalProfitOnDay(month,1);
+        for(int day=2;day<=DAYS;day++){
+            int currentdayprofit=totalProfitOnDay(month,day);
+            if(currentdayprofit>besttotal){
+                besttotal=currentdayprofit;
+                bestDay=day;
+            }
+        }
+        return bestDay;
     }
     
     public static String bestMonthForCommodity(String comm) { 
