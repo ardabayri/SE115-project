@@ -82,7 +82,7 @@ public class Main {
 
     public static String mostProfitableCommodityInMonth(int month) {
         if(month<0||month>MONTHS){
-            return "Invalid Month";
+            return "INVALID_MONTH";
         }
         int bestIndex=0;
         int bestSum=0;
@@ -156,12 +156,47 @@ public class Main {
         return bestDay;
     }
     
-    public static String bestMonthForCommodity(String comm) { 
-        return "DUMMY"; 
+    public static String bestMonthForCommodity(String comm) {
+        int cINDEX=commodityIndex(comm);
+        if(cINDEX==-1){
+            return "INVALID_COMMODİTY";
+        }
+        int bestMonth=0;
+        int bestSum=0;
+        for(int d=0;d<DAYS;d++){
+            bestSum+=profitData[0][d][cINDEX];
+        }
+        for(int m=1;m<MONTHS;m++){
+            int sum=0;
+            for(int d=0;d<DAYS;d++){
+                sum+=profitData[m][d][cINDEX];
+            }
+        }
+
+        return months[bestMonth];
     }
 
-    public static int consecutiveLossDays(String comm) { 
-        return 1234; 
+    public static int consecutiveLossDays(String comm) {
+        int cINDEX=commodityIndex(comm);
+        if(cINDEX==-1) {
+            return -1;
+        }
+        int maxst=0;
+        int currentst=0;
+        for(int m=0;m<MONTHS;m++){
+            for(int d=0;d<DAYS;d++){
+                int profit=profitData[m][d][cINDEX];
+                if(profit<0){
+                    currentst++;
+                    if(currentst>maxst){
+                        maxst=currentst;
+                    }
+                } else {
+                    currentst = 0;
+                }
+            }
+        }
+        return maxst;
     }
     
     public static int daysAboveThreshold(String comm, int threshold) { 
