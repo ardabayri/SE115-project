@@ -199,12 +199,40 @@ public class Main {
         return maxst;
     }
     
-    public static int daysAboveThreshold(String comm, int threshold) { 
-        return 1234; 
+    public static int daysAboveThreshold(String comm, int threshold) {
+        int cINDEX= commodityIndex(comm);
+        if(cINDEX==-1){
+            return -1;
+        }
+        int count=0;
+        for(int m=0;m<MONTHS;m++){
+            for(int d= 0;d<DAYS;d++){
+                if(profitData[m][d][cINDEX]>threshold){
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
-    public static int biggestDailySwing(int month) { 
-        return 1234; 
+    public static int biggestDailySwing(int month) {
+        if(month<0||month>=MONTHS){
+            return -99999;
+        }
+        int previous=totalProfitOnDay(month,1);
+        int maxdiff=0;
+        for(int day=2;day<=DAYS;day++){
+            int current=totalProfitOnDay(month,day);
+            int diff=current-previous;
+            if(diff<0){
+                diff=-diff;
+            }
+            if(diff>maxdiff){
+                maxdiff=diff;
+            }
+            previous=current;
+        }
+        return maxdiff;
     }
     
     public static String compareTwoCommodities(String c1, String c2) { 
