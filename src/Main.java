@@ -1,8 +1,9 @@
 // Main.java — Students version
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Scanner;
+
 
 public class Main {
     static final int MONTHS = 12;
@@ -17,55 +18,46 @@ public class Main {
     static int[][][] profitData=new int[MONTHS][DAYS][COMMS];
     static boolean dataLoaded=false;
     public static void loadData() {
-    for(int m=0;m<MONTHS;m++){
-        for(int d=0;d<DAYS;d++){
-            for(int c=0;c<COMMS;c++){
-                profitData[m][d][c]=0;
-            }
-        }
-    }
-    for(int m=0;m<MONTHS;m++){
-        String fileName= months[m]+ ".txt";
-        File f1= new File("Data_Files" +File.separator +fileName);
-        File f2=new File("Project" +File.separator +  "Data_files" +File.separator + fileName);
-        File target=f1.exists() ? f1:(f2.exists()? f2:null);
-        if(target==null){
-            continue;
-        }
-        BufferedReader br=null;
-        try {
-            br = new BufferedReader(new FileReader(target));
-            String line;
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.length() == 0) continue;
-                String[] parts = line.split(",");
-                if (parts.length != 3) continue;
-                int day;
-                int profit;
-                try {
-                    day = Integer.parseInt(parts[0].trim());
-                    profit = Integer.parseInt(parts[2].trim());
-                } catch (Exception e) {
-                    continue;
-                }
-                String comm = parts[1].trim();
-                int cIndex = commodityIndex(comm);
-                if (cIndex == -1) continue;
-                if (day < 1 || day > DAYS) continue;
-                profitData[m][day - 1][cIndex] = profit;
-            }
-        } catch (Exception e) {
+        for (int m = 0; m < MONTHS; m++) {
+            String fileName = months[m] + ".txt";
+            String path = "../Data_Files/" + fileName;
 
-        } finally {
+
+            Scanner reader = null;
             try {
-                if(br!=null) br.close();
+                reader = new Scanner(Paths.get(path));
 
-            } catch (Exception ignored){}
+                while (reader.hasNextLine()) {
+                    String line = reader.nextLine().trim();
+                    if (line.length() == 0) continue;
 
+                    // Format: Day,Commodity,Profit
+                    String[] parts = line.split(",");
+                    if (parts.length != 3) continue;
+
+                    int day;
+                    int profit;
+                    try {
+                        day = Integer.parseInt(parts[0].trim());
+                        profit = Integer.parseInt(parts[2].trim());
+                    } catch (Exception e) {
+                        continue;
+                    }
+
+                    String comm = parts[1].trim();
+                    int cIndex = commodityIndex(comm);
+                    if (cIndex == -1) continue;
+                    if (day < 1 || day > DAYS) continue;
+
+                    profitData[m][day - 1][cIndex] = profit;
+                }
+
+            } catch (IOException e) {
+                // File not found or cannot be opened
+            } finally {
+                if (reader != null) reader.close();
+            }
         }
-    }
-
     }
     private static int commodityIndex(String comm){
         if(comm==null)return-1;
@@ -108,9 +100,9 @@ public class Main {
             return -99999;
         }
         int total=0;
-        int dayIndex=day-1;
+        int dayIndex=day -1;
         for(int c=0;c<COMMS;c++){
-            total=profitData[MONTHS][dayIndex][c];
+            total+=profitData[month][dayIndex][c];
         }
 
         return total;
@@ -251,9 +243,9 @@ public class Main {
         }
         int diff=Math.abs(sum1-sum2);
         if(sum1>sum2){
-            return c1 + "is better by " + diff;
+            return c1  +  " is better by " + diff;
         } else {
-            return c2 + "is better by " + diff;
+            return c2  +  " is better by " + diff;
         }
     }
     
@@ -285,4 +277,4 @@ public class Main {
         loadData();
         System.out.println("Data loaded – ready for queries");
     }
-}
+    }
