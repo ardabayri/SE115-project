@@ -74,9 +74,6 @@ public class Main {
         }
         return -1;
     }
-    private static boolean validMonth(int month){
-        return month>=0&&month<MONTHS;
-    }
 
     // ======== 10 REQUIRED METHODS (Students fill these) ========
 
@@ -235,12 +232,53 @@ public class Main {
         return maxdiff;
     }
     
-    public static String compareTwoCommodities(String c1, String c2) { 
-        return "DUMMY is better by 1234"; 
+    public static String compareTwoCommodities(String c1, String c2) {
+        int i1=commodityIndex(c1);
+        int i2=commodityIndex(c2);
+        if(i1==-1||i2==-1){
+            return "INVALID_COMMODİTY";
+        }
+        int sum1=0;
+        int sum2=0;
+        for(int m=0;m<MONTHS;m++){
+            for(int d=0;d<DAYS;d++){
+                sum1+=profitData[m][d][i1];
+                sum2+=profitData[m][d][i2];
+            }
+        }
+        if(sum1==sum2){
+            return "Equal";
+        }
+        int diff=Math.abs(sum1-sum2);
+        if(sum1>sum2){
+            return c1 + "is better by " + diff;
+        } else {
+            return c2 + "is better by " + diff;
+        }
     }
     
-    public static String bestWeekOfMonth(int month) { 
-        return "DUMMY"; 
+    public static String bestWeekOfMonth(int month) {
+        if(month<0||month>=MONTHS){
+            return "INVALID_MONTH";
+        }
+        int bestweek=1;
+        int bestsum=0;
+        for(int day=1;day<=7;day++){
+            bestsum+=totalProfitOnDay(month,day);
+        }
+        for(int week=2;week<=4;week++){
+            int sum=0;
+            int startday=(week-1)*7+1;
+            int endday=week*7;
+            for(int day=startday;day<=endday;day++){
+                sum+=totalProfitOnDay(month,day);
+            }
+            if(sum>bestsum){
+                bestsum=sum;
+                bestweek=week;
+            }
+        }
+        return "Week" + bestweek;
     }
 
     public static void main(String[] args) {
