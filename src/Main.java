@@ -1,8 +1,8 @@
 // Main.java — Students version
 
-import java.io.IOException;
+import java.util.*;
 import java.nio.file.Paths;
-import java.util.Scanner;
+import java.io.*;
 
 
 public class Main {
@@ -31,7 +31,7 @@ public class Main {
                     String line = reader.nextLine().trim();
                     if (line.length() == 0) continue;
 
-                    // Format: Day,Commodity,Profit
+
                     String[] parts = line.split(",");
                     if (parts.length != 3) continue;
 
@@ -53,7 +53,7 @@ public class Main {
                 }
 
             } catch (IOException e) {
-                // File not found or cannot be opened
+
             } finally {
                 if (reader != null) reader.close();
             }
@@ -148,7 +148,7 @@ public class Main {
     public static String bestMonthForCommodity(String comm) {
         int cINDEX=commodityIndex(comm);
         if(cINDEX==-1){
-            return "INVALID_COMMODİTY";
+            return "INVALID_COMMODITY";
         }
         int bestMonth=0;
         int bestSum=0;
@@ -159,8 +159,13 @@ public class Main {
             int sum=0;
             for(int d=0;d<DAYS;d++){
                 sum+=profitData[m][d][cINDEX];
+                if (sum >= bestSum) {
+                    bestSum = sum;
+                    bestMonth = m;
+                }
             }
         }
+
 
         return months[bestMonth];
     }
