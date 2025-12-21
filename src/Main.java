@@ -70,7 +70,7 @@ public class Main {
     // ======== 10 REQUIRED METHODS (Students fill these) ========
 
     public static String mostProfitableCommodityInMonth(int month) {
-        if(month<0||month>MONTHS){
+        if(month<0||month>=MONTHS){
             return "INVALID_MONTH";
         }
         int bestIndex=0;
@@ -93,7 +93,7 @@ public class Main {
     }
 
     public static int totalProfitOnDay(int month, int day) {
-        if(month<0||month>MONTHS){
+        if(month<0||month>=MONTHS){
             return -99999;
         }
         if(day<1||day>DAYS){
@@ -110,7 +110,7 @@ public class Main {
 
     public static int commodityProfitInRange(String commodity, int from, int to) {
         int cIndex=commodityIndex(commodity);
-        if(cIndex==1){
+        if(cIndex== -1){
             return -99999;
         }
         if(from<1||to>DAYS||from>to){
@@ -130,7 +130,7 @@ public class Main {
     }
 
     public static int bestDayOfMonth(int month) {
-        if(month<0||month>MONTHS){
+        if(month<0||month>=MONTHS){
             return -1;
         }
         int bestDay=1;
@@ -159,11 +159,12 @@ public class Main {
             int sum=0;
             for(int d=0;d<DAYS;d++){
                 sum+=profitData[m][d][cINDEX];
+            }
+
                 if (sum >= bestSum) {
                     bestSum = sum;
                     bestMonth = m;
                 }
-            }
         }
 
 
@@ -233,7 +234,7 @@ public class Main {
         int i1=commodityIndex(c1);
         int i2=commodityIndex(c2);
         if(i1==-1||i2==-1){
-            return "INVALID_COMMODİTY";
+            return "INVALID_COMMODITY";
         }
         int sum1=0;
         int sum2=0;
@@ -275,7 +276,7 @@ public class Main {
                 bestweek=week;
             }
         }
-        return "Week" + bestweek;
+        return "Week "  +  bestweek;
     }
 
     public static void main(String[] args) {
